@@ -6,35 +6,40 @@ const decimal = document.querySelector('.decimal');
 const AC = document.querySelector('.AC');
 const leftBrace = document.querySelector('.leftBrace');
 const rightBrace = document.querySelector('.rightBrace');
+
 let expression = [];
 let showingAnswer = false;
 let openBraces = 0;
 
 clear();
 
+document.querySelectorAll('.number, .operation, .leftBrace, .rightBrace')
+    .forEach(button => button.addEventListener('click', () => display.innerHTML += button.innerHTML));
+document.querySelectorAll('.operation, .leftBrace, .rightBrace')
+    .forEach(button => button.addEventListener('click', () => expression.push(button.innerHTML)));
+
 numbers.forEach((button) => {
     button.addEventListener('click', () => {
         if (showingAnswer) {
             clear();
         }
-        if (expression.length === 0 || (isNaN(expression[expression.length - 1]) && expression[expression.length - 1] !== '.')) {
+
+        // If expression empty || previous token is an operator
+        if (expression.length === 0 || (isNaN(expression.at(-1)) && expression.at(-1) !== '.')) {
             expression.push(button.innerHTML);
         } else {
             expression[expression.length - 1] += button.innerHTML;
         }
-        
-        display.innerHTML += button.innerHTML;
 
         if (!button.classList.contains('decimal')) {
-            leftBrace.disabled = false;
+            enable('.operation, .leftBrace');
             if (openBraces > 0) {
-                rightBrace.disabled = false;
+                enable('.rightBrace');
             } else {
-                evaluate.disabled = false;
+                enable('.evaluate');
             }
-            enableOperations();
         } else {
-            leftBrace.disabled = true;
+            disable('.leftBrace');
         }
         console.log(expression);
     });
@@ -42,11 +47,8 @@ numbers.forEach((button) => {
 
 operations.forEach((button) => {
     button.addEventListener('click', () => {
-        expression.push(button.innerHTML);
-        display.innerHTML += button.innerHTML;
-        decimal.disabled = false;
-        evaluate.disabled = true;
-        disableOperations();
+        enable('.decimal');
+        disable('.operation, .evaluate, .rightBrace');
         console.log(expression);
     });
 });
@@ -61,9 +63,7 @@ evaluate.addEventListener('click', () => {
         display.innerHTML = answer;
     }
     showingAnswer = true;
-    disableOperations();
-    evaluate.disabled = true;
-    rightBrace.disabled = true;
+    disable('.operation, .evaluate, .rightBrace');
 });
 
 decimal.addEventListener('click', () => {
@@ -72,63 +72,52 @@ decimal.addEventListener('click', () => {
 
 leftBrace.addEventListener('click', () => {
     openBraces++;
-    rightBrace.disabled = true;
-    expression.push(leftBrace.innerHTML);
-    display.innerHTML += leftBrace.innerHTML;
-    decimal.disabled = false;
-    evaluate.disabled = true;
-    disableOperations();
+    enable('.decimal');
+    disable('.operation, .rightBrace, .evaluate');
     console.log(expression);
-    console.log(openBraces);
 });
 
 rightBrace.addEventListener('click', () => {
-    openBraces--;
-    if (openBraces === 0) {
-        rightBrace.disabed = true;
-        evaluate.disabled = false;
+    if (--openBraces === 0) {
+        disable('.rightBrace');
+        enable('.evaluate');
     }
-    expression.push(rightBrace.innerHTML);
-    display.innerHTML += rightBrace.innerHTML;
-    decimal.disabled = false;
-    enableOperations();
+    enable('.operation, .decimal');
     console.log(expression);
 });
 
 function clear() {
     expression = [];
     display.innerHTML = '';
-    decimal.disabled = false;
-    evaluate.disabled = true;
     showingAnswer = false;
     openBraces = 0;
-    leftBrace.disabled = false;
-    rightBrace.disabled = true;
-    disableOperations();
+    disable('.operation, .evaluate, .rightBrace');
+    enable('.decimal, .leftBrace');
 }
 
 function calculate(expression) {
-    console.log("evaluating:");
-    console.log(expression);
+    for (let i = 0; i < expression.length; i++) {
+        if (!isNaN(expression[i])) {
+            expression[i] = +expression[i];
+        }
+    }
 
     // Brackets
     for (let i = expression.length; i >= 0; i--) {
         if (expression[i] === "(") {
             let j = expression.indexOf(")", i);
             expression.splice(i, j - i + 1, calculate(expression.slice(i + 1, j)));
-            console.log(expression);
-            console.log(i);
         }
     }
 
     // Multiplication and division
     for (let i = 0; i < expression.length;) {
         if (expression[i + 1] === "×") {
-            expression.splice(i, 3, +expression[i] * +expression[i + 2]);
+            expression.splice(i, 3, expression[i] * expression[i + 2]);
         } else if (!isNaN(expression[i + 1])) {
-            expression.splice(i, 3, +expression[i] * +expression[i + 1]);
+            expression.splice(i, 3, expression[i] * expression[i + 1]);
         } else if (expression[i + 1] === "÷") {
-            expression.splice(i, 3, +expression[i] / +expression[i + 2]);
+            expression.splice(i, 3, expression[i] / expression[i + 2]);
         } else {
             i++
         }
@@ -137,26 +126,21 @@ function calculate(expression) {
     // Addition and subtraction
     for (let i = 0; i < expression.length;) {
         if (expression[i + 1] === "+") {
-            expression.splice(i, 3, +expression[i] + +expression[i + 2]);
+            expression.splice(i, 3, expression[i] + expression[i + 2]);
         } else if (expression[i + 1] === "-") {
-            expression.splice(i, 3, +expression[i] - +expression[i + 2]);
+            expression.splice(i, 3, expression[i] - expression[i + 2]);
         } else {
             i++
         }
     }
 
-    console.log(expression);
     return expression[0];
 }
 
-function enableOperations() {
-    operations.forEach((button) => {
-        button.disabled = false;
-    })
+function enable(classes) {
+    document.querySelectorAll(classes).forEach((button) => button.disabled = false);
 }
 
-function disableOperations() {
-    operations.forEach((button) => {
-        button.disabled = true;
-    })
+function disable(classes) {
+    document.querySelectorAll(classes).forEach((button) => button.disabled = true);
 }
