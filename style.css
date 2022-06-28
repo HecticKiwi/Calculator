@@ -5,32 +5,37 @@ html {
 
 body {
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    background: linear-gradient(to right top, #65dfc9, #6cdbeb);
 }
 
 .calculator {
+    place-self: center;
     height: 500px;
-    background-color: rgb(56, 56, 56);
-    top: 50%;
     display: grid;
     grid-template-rows: min-content auto;
     grid-template-columns: 300px;
     border-radius: 10px;
-    box-shadow: 1em 1em 2em rgba(0,0,0,0.3);
+    background: linear-gradient(to right bottom,
+            rgba(255, 255, 255, 0.7),
+            rgba(255, 255, 255, 0.3));
+    box-shadow: 1em 1em 2em rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2rem);
 }
 
 .calculator .screen {
     height: 1.25em;
-    background-color: darkgray;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     font-size: 60px;
     padding: 10px;
-    color: white;
+    color: #384e6b;
+    background: linear-gradient(to right bottom,
+            rgba(255, 255, 255, 0.7),
+            rgba(255, 255, 255, 0.3));
     border-radius: 10px 10px 0 0;
+    overflow: hidden;
 }
 
 .calculator .buttons {
@@ -42,15 +47,13 @@ body {
 }
 
 button {
-    text-decoration: none;
     background-color: #2b6777;
     color: white;
-    padding: 5px;
     border-radius: .25em;
-    display: inline-block;
     border: none;
     font-size: 22px;
     font-family: monospace;
+    box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.212);
 }
 
 button:hover {
@@ -61,15 +64,19 @@ button:active {
     opacity: 0.6;
 }
 
-.number {
+button.number {
     background-color: white;
-    color: black;
+    color: #384e6b;
 }
 
-.evaluate {
+button.evaluate {
     background-color: darkcyan;
 }
 
-.AC {
+button.AC {
     background-color: darkred;
+}
+
+button:disabled {
+    opacity: 0.5;
 }
