@@ -13,24 +13,19 @@ let openBraces = 0;
 
 clear();
 
-document.querySelectorAll('.number, .operation, .leftBrace, .rightBrace')
-    .forEach(button => button.addEventListener('click', () => display.innerHTML += button.innerHTML));
-document.querySelectorAll('.operation, .leftBrace, .rightBrace')
-    .forEach(button => button.addEventListener('click', () => expression.push(button.innerHTML)));
-
 numbers.forEach((button) => {
     button.addEventListener('click', () => {
         if (showingAnswer) {
             clear();
         }
-
+        
         // If expression empty || previous token is an operator
         if (expression.length === 0 || (isNaN(expression.at(-1)) && expression.at(-1) !== '.')) {
             expression.push(button.innerHTML);
         } else {
             expression[expression.length - 1] += button.innerHTML;
         }
-
+        
         if (!button.classList.contains('decimal')) {
             enable('.operation, .leftBrace');
             if (openBraces > 0) {
@@ -85,6 +80,11 @@ rightBrace.addEventListener('click', () => {
     enable('.operation, .decimal');
     console.log(expression);
 });
+
+document.querySelectorAll('.number, .operation, .leftBrace, .rightBrace')
+    .forEach(button => button.addEventListener('click', () => display.innerHTML += button.innerHTML));
+document.querySelectorAll('.operation, .leftBrace, .rightBrace')
+    .forEach(button => button.addEventListener('click', () => expression.push(button.innerHTML)));
 
 function clear() {
     expression = [];
