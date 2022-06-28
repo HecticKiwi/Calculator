@@ -26,6 +26,7 @@ body {
 .calculator .screen {
     height: 1.25em;
     display: flex;
+    white-space: nowrap;
     justify-content: flex-end;
     align-items: center;
     font-size: 60px;
@@ -79,4 +80,9 @@ button.AC {
 
 button:disabled {
     opacity: 0.5;
+}
+
+.AC {
+    grid-column-start: 3;
+    grid-column-end: 5;
 }
