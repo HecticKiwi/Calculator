@@ -101,7 +101,7 @@ function calculate(expression) {
             expression[i] = +expression[i];
         }
     }
-
+    
     // Brackets
     for (let i = expression.length; i >= 0; i--) {
         if (expression[i] === "(") {
@@ -109,17 +109,17 @@ function calculate(expression) {
             expression.splice(i, j - i + 1, calculate(expression.slice(i + 1, j)));
         }
     }
-
+    
     // Multiplication and division
     for (let i = 0; i < expression.length;) {
         if (expression[i + 1] === "×") {
             expression.splice(i, 3, expression[i] * expression[i + 2]);
-        } else if (!isNaN(expression[i + 1])) {
+        } else if (!"+-".includes(expression[i]) && !isNaN(expression[i + 1])) {
             expression.splice(i, 3, expression[i] * expression[i + 1]);
         } else if (expression[i + 1] === "÷") {
             expression.splice(i, 3, expression[i] / expression[i + 2]);
         } else {
-            i++
+            i++;
         }
     }
 
@@ -130,10 +130,10 @@ function calculate(expression) {
         } else if (expression[i + 1] === "-") {
             expression.splice(i, 3, expression[i] - expression[i + 2]);
         } else {
-            i++
+            i++;
         }
     }
-
+    
     return expression[0];
 }
 
