@@ -7,6 +7,7 @@ body {
     height: 100vh;
     display: grid;
     background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+    grid-template-rows: auto min-content;
 }
 
 .calculator {
@@ -85,4 +86,17 @@ button:disabled {
 .AC {
     grid-column-start: 3;
     grid-column-end: 5;
+}
+
+footer {
+    font-family: monospace;
+    text-align: center;
+    padding-bottom: 30px;
+    font-size: 22px;
+    color: darkcyan;
+}
+
+a {
+    color: darkcyan;
+    /* text-decoration: none; */
 }
