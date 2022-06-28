@@ -101,6 +101,7 @@ function calculate(expression) {
             expression[i] = +expression[i];
         }
     }
+
     
     // Brackets
     for (let i = expression.length; i >= 0; i--) {
@@ -115,7 +116,7 @@ function calculate(expression) {
         if (expression[i + 1] === "×") {
             expression.splice(i, 3, expression[i] * expression[i + 2]);
         } else if (!"+-".includes(expression[i]) && !isNaN(expression[i + 1])) {
-            expression.splice(i, 3, expression[i] * expression[i + 1]);
+            expression.splice(i, 2, expression[i] * expression[i + 1]);
         } else if (expression[i + 1] === "÷") {
             expression.splice(i, 3, expression[i] / expression[i + 2]);
         } else {
