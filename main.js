@@ -18,6 +18,8 @@ numbers.forEach((button) => {
         if (showingAnswer) {
             clear();
         }
+
+        display.innerHTML += button.innerHTML
         
         // If expression empty || previous token is an operator
         if (expression.length === 0 || (isNaN(expression.at(-1)) && expression.at(-1) !== '.')) {
@@ -81,7 +83,7 @@ rightBrace.addEventListener('click', () => {
     console.log(expression);
 });
 
-document.querySelectorAll('.number, .operation, .leftBrace, .rightBrace')
+document.querySelectorAll('.operation, .leftBrace, .rightBrace')
     .forEach(button => button.addEventListener('click', () => display.innerHTML += button.innerHTML));
 document.querySelectorAll('.operation, .leftBrace, .rightBrace')
     .forEach(button => button.addEventListener('click', () => expression.push(button.innerHTML)));
