@@ -27,7 +27,7 @@ numbers.forEach((button) => {
         } else {
             expression[expression.length - 1] += button.innerHTML;
         }
-        
+
         if (!button.classList.contains('decimal')) {
             enable('.operation, .leftBrace');
             if (openBraces > 0) {
@@ -125,7 +125,7 @@ function calculate(expression) {
             i++;
         }
     }
-
+    
     // Addition and subtraction
     for (let i = 0; i < expression.length;) {
         if (expression[i + 1] === "+") {
